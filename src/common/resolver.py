@@ -48,8 +48,6 @@ def resolve_function_group(object, function_type, functions, default, merge_type
 
     out_functions = []
 
-
-
     window_default = [*default, *default]
 
     for time_window in time_windows:
@@ -80,7 +78,6 @@ def resolve_function_group(object, function_type, functions, default, merge_type
                                and len(function.get("arguments")) == 2 * arg_dimension)]
 
         if any(non_delta_functions):
-            print(non_delta_functions)
             if len(non_delta_functions) > 1:
                 raise Exception("Multiple non delta functions used at the same initial start time!")
             args = non_delta_functions[0].get("arguments")
@@ -90,8 +87,6 @@ def resolve_function_group(object, function_type, functions, default, merge_type
             for x in range(arg_dimension):
                 window_default[x] = args[x]
                 window_default[x + arg_dimension] = effective_percent * args[x + arg_dimension]
-
-            print(window_default)
 
         # calculate effective movement based on current position.
 
@@ -117,11 +112,16 @@ def resolve_function_group(object, function_type, functions, default, merge_type
                     window_actual[x + arg_dimension] = window_actual[x + arg_dimension] + effective_percent * args[x]
 
 
+        if function_type == "C":
+            window_actual = [min(255, int(255 * x)) for x in window_actual]
+
         window_result = {"function": function_type,
                          "easing": window_easing,
                          "start": int_time_to_time(object["time"], time_window[0]),
                          "end": int_time_to_time(object["time"], time_window[1]),
                          "arguments": window_actual.copy()}
+
+        window_default = [window_actual[x] for x in range(2 * arg_dimension)]
 
         out_functions.append(window_result)
 
@@ -157,6 +157,16 @@ def resolve_storyboard(storyboard):
 
         for function_type in unique_functions:
             function_group = [function for function in functions if function.get("function") == function_type]
+
+            if function_type in ["L", "P"]:
+                for function in function_group:
+                    function["start"] = int_time_to_time(object["time"], function.get("start"))
+                    function["end"] = int_time_to_time(object["time"], function.get("end"))
+
+                result_functions = [*result_functions,
+                                    *function_group]
+
+                continue
 
             result_functions = [*result_functions,
                                 *resolve_function_group(object,
