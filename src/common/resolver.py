@@ -5,14 +5,15 @@ def int_time_to_time(object_time, int_time):
 
     return object_time["start"] + duration * int_time
 
-def resolve_functions(objects):
+def resolve_storyboard(storyboard):
     # TODO actually write this thing
 
-    for object in objects:
-        time = object["time"]
-        for function in object["functions"]:
-            function["start"] = int_time_to_time(time, function["start"])
-            function["end"] = int_time_to_time(time, function["end"])
+    for object in storyboard:
+        if (object.get("resolved") != True):
+            time = object["time"]
+            for function in object["functions"]:
+                function["start"] = int_time_to_time(time, function["start"])
+                function["end"] = int_time_to_time(time, function["end"])
 
-    return objects
+    return storyboard
 

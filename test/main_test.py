@@ -157,4 +157,6 @@ def test_osb_converter():
 
     # print(ut.convert_storyboard_to_osb(test_sb))
 
+    test = ut.convert_osb_element_to_object("""Sprite,Background,Centre,"mosbg.jpg",320,240\n F,0,0,,0""")
+
     assert ut.convert_storyboard_to_osb(test_sb)

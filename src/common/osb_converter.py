@@ -20,7 +20,7 @@ def convert_storyboard_to_osb(storyboard: list):
             out += ",".join([str(object.get("type")),
                              str(object.get("layer")),
                              str(object.get("tether")),
-                             '"' + str(object.get("filepath")).replace("/", "\\") + '"',
+                             str(object.get("filepath")).replace("/", "\\"),
                              str(object.get("position")[0]),
                              str(object.get("position")[1])]) + "\n"
 
@@ -53,3 +53,28 @@ def convert_storyboard_to_osb(storyboard: list):
                         out += "\n"
 
     return out.replace(",None,", ",,")
+
+
+def convert_osb_element_to_object(element):
+    element = element.split("\n")
+    element = [[y.strip() for y in x.split(",")] for x in element]
+
+# Sprite,Foreground,Centre,"sb\font\8.png",268.25,420.0
+# S,0,10000,30000,0.15,0.15
+
+    object = {"type": element[0][0],
+              "layer": element[0][1],
+              "tether": element[0][2],
+              "filepath": element[0][3],
+              "resolved": True,
+              "position": [element[0][4], element[0][5]],
+              "functions": []}
+
+    for function in element[1:]:
+        object['functions'] = [*object['functions'], {"function": function[0],
+                                                      "easing": function[1],
+                                                      "start": function[2],
+                                                      "end": function[3],
+                                                      "arguments": function[4:]}]
+
+    return object

@@ -9,7 +9,7 @@ def generate_storyboard(char_dict):
     text = effects.align_objects_h(text, "center")
     text_effect = effects.init_simple_effect(text, {"start": 10000, "end": 30000}, 0.15, [320, 420])
 
-    mosbg_go_away = convert.convert_osb_element_to_object("""Sprite,Background,Centre,"mosbg.jpg",320,240\n F,0,0,,0""")
+    bg_go_away = convert.convert_osb_element_to_object("""Sprite,Background,Centre,"mosaic_bg.jpg",320,240\n F,0,0,0,0""")
 
     # mosbg_go_away = {"type": "Sprite",
     #                  "filepath": "mosbg.jpg",
@@ -21,4 +21,4 @@ def generate_storyboard(char_dict):
     #                                 "easing": 0,
     #                                 "arguments": [0]}]}
 
-    return [*text_effect, mosbg_go_away]
+    return [*text_effect, bg_go_away]

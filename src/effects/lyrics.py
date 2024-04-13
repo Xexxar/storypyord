@@ -2,7 +2,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 import os
 
 
-def generate_text(text: str, char_dict: dict, w_offset, h_offset):
+def generate_text(text: str, char_dict: dict, h_offset, v_offset):
     # Should be able to generate it raw left justified and execute command to center.. (in theory we could apply that
 
     out = []
@@ -11,10 +11,10 @@ def generate_text(text: str, char_dict: dict, w_offset, h_offset):
 
     for char in text:
         if char == "\n":
-            pos_delta = [0, pos_delta[1] + char_dict[" "]["h"] + h_offset]
+            pos_delta = [0, pos_delta[1] + char_dict[" "]["h"] + v_offset]
             continue
 
-        pos_delta = [pos_delta[0] + (char_dict[char]["w"] + w_offset) / 2.0, pos_delta[1]]
+        pos_delta = [pos_delta[0] + (char_dict[char]["w"] + h_offset) / 2.0, pos_delta[1]]
 
         char_out = {"type": "Sprite",
                     "filepath": char_dict[char]["path"],
@@ -23,10 +23,7 @@ def generate_text(text: str, char_dict: dict, w_offset, h_offset):
                     "tether": "Centre",
                     "functions": []}
 
-        print(char)
-        print(char_dict[char]["w"])
-
-        pos_delta = [pos_delta[0] + (char_dict[char]["w"] + w_offset) / 2.0, pos_delta[1]]
+        pos_delta = [pos_delta[0] + (char_dict[char]["w"] + h_offset) / 2.0, pos_delta[1]]
 
         if char not in [" ", "\n"]:
             out.append(char_out)
@@ -44,13 +41,11 @@ def generate_image_files(font, size, out_path):
 
     path = os.path.dirname(__file__)[0:-5] + '/resources/fonts/'
 
-
-
     for ind, character in enumerate(characters):
         w = int(font.getlength(character))
         h = int(size * 1.25)
 
-        char_dict[character] = {"w": w, "h": h, "path": out_path + str(ind) + ".png"}
+        char_dict[character] = {"w": w, "h": h, "path": '"' + out_path + str(ind) + '.png"'}
 
         const_adjust = 20
 
