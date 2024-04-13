@@ -3,7 +3,7 @@ import os
 
 
 def generate_text(text: str, char_dict: dict, h_offset, v_offset):
-    # Should be able to generate it raw left justified and execute command to center.. (in theory we could apply that
+    # Should be able to generate it raw left justified and execute command to center.. (in theory we could apply that)
 
     out = []
 

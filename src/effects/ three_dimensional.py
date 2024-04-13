@@ -22,3 +22,4 @@ sample_scene = {"camera": [{"start": 0,
 
 
 def generate_3d_scene_script(scene):
+    return

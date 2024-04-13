@@ -36,8 +36,8 @@ def convert_storyboard_to_osb(storyboard: list):
                         for loop_function in function.get("arguments"):
                             out += "  " + ",".join([str(loop_function.get("function")),
                                                     str(loop_function.get("easing")),
-                                                    str(loop_function.get("start")),
-                                                    str(loop_function.get("end"))]) + ","
+                                                    str(int(loop_function.get("start"))),
+                                                    str(int(loop_function.get("end")))]) + ","
                             if loop_function.get("arguments"):
                                 out += ",".join([str(x) for x in loop_function.get("arguments")])
 
@@ -45,8 +45,8 @@ def convert_storyboard_to_osb(storyboard: list):
                     else:
                         out += " " + ",".join([str(function.get("function")),
                                                str(function.get("easing")),
-                                               str(function.get("start")),
-                                               str(function.get("end"))]) + ","
+                                               str(int(function.get("start"))),
+                                               str(int(function.get("end")))]) + ","
                         if function.get("arguments"):
                             out += ",".join([str(x) for x in function.get("arguments")])
 
