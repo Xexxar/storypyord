@@ -84,6 +84,7 @@ def resolve_function_group(object, function_type, functions, default, merge_type
 
         if any(non_delta_functions):
             if len(non_delta_functions) > 1:
+                print(non_delta_functions)
                 raise Exception("Multiple non delta functions used at the same initial start time!")
             args = non_delta_functions[0].get("arguments")
 

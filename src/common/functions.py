@@ -49,3 +49,15 @@ def apply_function_with_restriction(objects, function, restriction, easing):
         object["functions"].append(temp_function)
 
     return objects
+
+def apply_function_with_index_times(objects, function, index_times):
+
+    for index_time in index_times:
+        for object in objects[index_time["index"][0]:index_time["index"][1]]:
+            temp_function = function.copy()
+            temp_function["start"] = index_time["time"]["start"]
+            temp_function["end"] = index_time["time"]["end"]
+
+            object["functions"].append(temp_function)
+
+    return objects
