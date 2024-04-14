@@ -48,7 +48,7 @@ def resolve_function_group(object, function_type, functions, default, merge_type
 
     out_functions = []
 
-    window_default = [*default, *default]
+    window_default = default
 
     for time_window in time_windows:
         active_functions = [function for function in functions
@@ -56,6 +56,8 @@ def resolve_function_group(object, function_type, functions, default, merge_type
 
         if not any(active_functions):
             continue
+
+        window_default = [*window_default, *window_default]
 
         # TODO probably need to do something like this later.
         non_linear_functions = [function for function in active_functions if function.get("easing") != 0]
@@ -65,9 +67,12 @@ def resolve_function_group(object, function_type, functions, default, merge_type
 
         if any(non_linear_functions):
             if len(non_linear_functions) > 1:
+                print(non_linear_functions)
                 raise Exception("NOT YET SUPPORTED")
 
             if non_linear_functions[0].get("end") != time_window[1]:
+                print(non_linear_functions)
+                print(time_window)
                 raise Exception("NOT YET SUPPORTED")
 
             window_easing = non_linear_functions[0].get("easing")
@@ -121,7 +126,7 @@ def resolve_function_group(object, function_type, functions, default, merge_type
                          "end": int_time_to_time(object["time"], time_window[1]),
                          "arguments": window_actual.copy()}
 
-        window_default = [window_actual[x] for x in range(2 * arg_dimension)]
+        window_default = [window_actual[arg_dimension + x] for x in range(arg_dimension)]
 
         out_functions.append(window_result)
 
