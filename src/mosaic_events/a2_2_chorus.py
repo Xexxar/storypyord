@@ -6,6 +6,15 @@ import src.mosaic_events.a1_0_intro as a1_0
 import src.common.restrictions as restrictions
 import math
 
+def apply_movement_to_lyrics_1(objects, start, end):
+    objects = functions.apply_function(objects,
+                                                        {"function": "M",
+                                                         "start": start,
+                                                         "end": end,
+                                                         "easing": 0,
+                                                         "arguments": [-0, -40]})
+
+    return objects
 
 def generate_storyboard(char_dict):
     glow = {"type": "Sprite",
@@ -118,4 +127,38 @@ def generate_storyboard(char_dict):
                             "easing": 0,
                             "arguments": ["A"]}]}
 
-    return [glow, globe, ring, spiral, burst]
+    lyrics = [
+        *apply_movement_to_lyrics_1(a1_0.base_lyrics_routine("What a wonder, fireborn and unforsaken",
+                                     0.15,
+                                     {"start": 128598, "end": 134053},
+                                     [320, 340],
+                                     [0, 0, 3/4, 7 / 8],
+                                     char_dict), 0, 7/8),
+        *apply_movement_to_lyrics_1(a1_0.base_lyrics_routine("Piece by broken piece to form",
+                                     0.15,
+                                     {"start": 134053, "end": 135416},
+                                     [320, 340],
+                                     [-3 / 4, -1/2, 7/8, 5/4],
+                                     char_dict), -3 / 4,
+            *a1_0.base_lyrics_routine("this",
+                                  0.25,
+                                  {"start": 136780, "end": 138143},
+                                  [320, 200],
+                                  [3 / 16, 4/16, 7/16, 8/16],
+                                  char_dict),
+        *a1_0.base_lyrics_routine("grand",
+                                  0.25,
+                                  {"start": 136780, "end": 138143},
+                                  [320, 240],
+                                  [7 / 16, 8/16, 11/16, 12/16],
+                                  char_dict),
+        *a1_0.base_lyrics_routine("mosaic",
+                                  0.25,
+                                  {"start": 136780, "end": 138143},
+                                  [320, 280],
+                                  [11 / 16, 12/16, 2, 2 + 3/4],
+                                  char_dict)
+
+    ]
+
+    return [glow, globe, ring, spiral, burst, *lyrics]

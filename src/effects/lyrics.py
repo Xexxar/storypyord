@@ -9,7 +9,7 @@ def generate_text(text: str, char_dict: dict, h_offset, v_offset):
 
     pos_delta = [0, 0]
 
-    for char in text:
+    for index, char in enumerate(text):
         if char == "\n":
             pos_delta = [0, pos_delta[1] + char_dict[" "]["h"] + v_offset]
             continue
@@ -21,6 +21,7 @@ def generate_text(text: str, char_dict: dict, h_offset, v_offset):
                     "layer": "Foreground",
                     "position": pos_delta,
                     "tether": "Centre",
+                    "index": index
                     "functions": []}
 
         pos_delta = [pos_delta[0] + (char_dict[char]["w"] + h_offset) / 2.0, pos_delta[1]]

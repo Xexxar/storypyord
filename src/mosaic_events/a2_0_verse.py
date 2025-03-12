@@ -42,15 +42,15 @@ def apply_movement_to_lyrics_3(objects):
                                                         [{"index": [3, 5],
                                                              "time": {"start": 3/8 - 1/16, "end": 3/8 + 1/16}},])
 
-    objects = functions.apply_function(objects,
-                                                        {"function": "M",
-                                                         "easing": 0,
-                                                         "start": -1/16,
-                                                         "end": 10/8,
-                                                         "arguments": [0, -10]})
+    # objects = functions.apply_function(objects,
+    #                                                     {"function": "M",
+    #                                                      "easing": 0,
+    #                                                      "start": -1/16,
+    #                                                      "end": 10/8,
+    #                                                      "arguments": [0, -10]})
 
     start = 1
-    end = 10/8
+    end = 12/8
 
     objects = functions.apply_function(objects,
                                        {"function": "F",
@@ -58,23 +58,29 @@ def apply_movement_to_lyrics_3(objects):
                                         "start": start,
                                         "end": end,
                                         "arguments": [1, 0]})
+    objects = functions.apply_function(objects,
+                                       {"function": "M",
+                                        "easing": 18,
+                                        "start": 6/8 + 1/16,
+                                        "end": end,
+                                        "arguments": [0, -60]})
 
 
-    # objects = functions.apply_function_with_restriction(objects,
-    #                                    {"function": "M",
-    #                                     "easing": 0,
-    #                                     "start": start,
-    #                                     "end": end,
-    #                                     "arguments": [10, 0]},
-    #                                                     restrictions.distance_from_center_x, 3)
+    objects = functions.apply_function_with_restriction(objects,
+                                       {"function": "M",
+                                        "easing": 0,
+                                        "start": 6/8 + 1/16,
+                                        "end": end,
+                                        "arguments": [10, 0]},
+                                                        restrictions.distance_from_center_x, 3)
 
-    # objects = functions.apply_function_with_restriction(objects,
-    #                                                     {"function": "M",
-    #                                                      "easing": 18,
-    #                                                      "start": start,
-    #                                                      "end": end,
-    #                                                      "arguments": [0, 10]},
-    #                                                     restrictions.absolute_distance_from_center_x, 3)
+    objects = functions.apply_function_with_restriction(objects,
+                                                        {"function": "M",
+                                                         "easing": 0,
+                                                         "start": 6/8 + 1/16,
+                                                         "end": end,
+                                                         "arguments": [0, 10]},
+                                                        restrictions.absolute_distance_from_center_x, 3)
 
     objects = functions.apply_function_with_restriction(objects,
                                                         {"function": "R",
@@ -200,7 +206,7 @@ def generate_storyboard(char_dict):
             a1_0.base_lyrics_routine("Lost",
                                      0.2,
                                      {"start": 93143, "end": 93655},
-                                     [320, 320],
+                                     [320, 340],
                                      [-1 / 6 + 1 / 12, 0 + 1 / 12, 4 / 6 + 1 / 12,
                                       5 / 6 + 1 / 12],
                                      char_dict),
@@ -209,7 +215,7 @@ def generate_storyboard(char_dict):
             a1_0.base_lyrics_routine("in",
                                      0.2,
                                      {"start": 93655, "end": 94166},
-                                     [320, 320],
+                                     [320, 340],
                                      [-1 / 6 + 1 / 12, 0 + 1 / 12, 4 / 6 + 1 / 12,
                                       5 / 6 + 1 / 12],
                                      char_dict),
@@ -218,7 +224,7 @@ def generate_storyboard(char_dict):
             a1_0.base_lyrics_routine("time",
                                      0.2,
                                      {"start": 94166, "end": 95871},
-                                     [320, 320],
+                                     [320, 340],
                                      [-1 / 16 + 1 / 32, 0 + 1 / 32, 1 / 2, 1],
                                      char_dict),
             -1 / 32, 1),
@@ -242,7 +248,7 @@ def generate_storyboard(char_dict):
             base_split_lyrics_routine("Sensory",
                                       0.2,
                                       {"start": 104053, "end": 105416},
-                                      [320, 340],
+                                      [320, 360],
                                       char_dict)),
          *apply_movement_to_lyrics_2(
             a1_0.base_lyrics_routine("and",

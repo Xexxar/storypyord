@@ -61,3 +61,6 @@ def apply_function_with_index_times(objects, function, index_times):
             object["functions"].append(temp_function)
 
     return objects
+
+
+def apply_function_v2(objects, function, restriction=None, restriction_easing=None,)

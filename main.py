@@ -7,7 +7,7 @@ import pprint
 
 def main() -> None:
     # path = "/home/xexxar/.osustable/drive_c/osu/Songs/1275778 Theocracy - Mirror of Souls/Theocracy - Mirror of Souls (I Must Decrease).osb"
-    path = "/home/xexxar/.osustable/drive_c/osu/Songs/Theocracy_-_Mosaic/Theocracy - Mosaic (I Must Decrease).osb"
+    path = "/home/xexxar/osu-winello-install/osu!/Songs/Theocracy_-_Mosaic/Theocracy - Mosaic (I Must Decrease).osb"
 
     print("Generating json-esq storyboard...")
     storyboard = maestro.generate_storyboard()
