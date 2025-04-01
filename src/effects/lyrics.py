@@ -14,17 +14,17 @@ def generate_text(text: str, char_dict: dict, h_offset, v_offset):
             pos_delta = [0, pos_delta[1] + char_dict[" "]["h"] + v_offset]
             continue
 
-        pos_delta = [pos_delta[0] + (char_dict[char]["w"] + h_offset) / 2.0, pos_delta[1]]
+        pos_delta = [pos_delta[0] + (char_dict[char]["w"] + h_offset) / 2.0, pos_delta[1], 0]
 
         char_out = {"type": "Sprite",
                     "filepath": char_dict[char]["path"],
                     "layer": "Foreground",
                     "position": pos_delta,
                     "tether": "Centre",
-                    "index": index
+                    "index": index,
                     "functions": []}
 
-        pos_delta = [pos_delta[0] + (char_dict[char]["w"] + h_offset) / 2.0, pos_delta[1]]
+        pos_delta = [pos_delta[0] + (char_dict[char]["w"] + h_offset) / 2.0, pos_delta[1], 0]
 
         if char not in [" ", "\n"]:
             out.append(char_out)

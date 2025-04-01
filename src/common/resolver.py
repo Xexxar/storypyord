@@ -9,6 +9,9 @@ def int_time_to_time(object_time, int_time):
 
 
 def determine_time_windows(functions):
+    if not functions:
+        return []
+
     windows = set({})
 
     for function in functions:
@@ -26,6 +29,7 @@ def determine_time_windows(functions):
         out.append([windows[x], windows[x + 1]])
 
     return out
+
 
 def calculate_effective_percent(time_window, function):
     easing = function.get("easing")
@@ -80,7 +84,8 @@ def resolve_function_group(object, function_type, functions, default, merge_type
         non_delta_functions = [function for function in active_functions if function.get("start") == time_window[0]
                                and len(function.get("arguments")) == 2 * arg_dimension]
         active_functions = [function for function in active_functions if not (function.get("start") == time_window[0]
-                               and len(function.get("arguments")) == 2 * arg_dimension)]
+                                                                              and len(
+                    function.get("arguments")) == 2 * arg_dimension)]
 
         if any(non_delta_functions):
             if len(non_delta_functions) > 1:
@@ -117,7 +122,6 @@ def resolve_function_group(object, function_type, functions, default, merge_type
                 for x in range(arg_dimension):
                     window_actual[x + arg_dimension] = window_actual[x + arg_dimension] + effective_percent * args[x]
 
-
         if function_type == "C":
             window_actual = [min(255, int(255 * x)) for x in window_actual]
 
@@ -134,27 +138,30 @@ def resolve_function_group(object, function_type, functions, default, merge_type
     return out_functions
 
 
-def resolve_storyboard(storyboard):
-    # TODO actually write this thing
+def resolve_objects(objects):
+    """Updates in place."""
 
     function_merge_types = {"S": "multiplication",
                             "M": "addition",
                             "F": "multiplication",
                             "R": "addition",
                             "V": "multiplication",
-                            "C": "multiplication"}
+                            "C": "multiplication",
+                            "Z": "multiplication"}
 
-    for object in storyboard:
-        if object.get("resolved"):
-            # Skip already resolved functions.
-            continue
+    # TODO thread this
 
-        function_defaults = {"S": [1],
+    for object in objects:
+        if object.get("scale") is None:
+            object["scale"] = 1.0
+
+        function_defaults = {"S": object.get("scale"),
                              "M": object.get("position"),
                              "F": [1],
                              "R": [0],
                              "V": [1, 1],
-                             "C": [1, 1, 1]}
+                             "C": [1, 1, 1],
+                             "Z": [1]}
 
         functions = object.get("functions")
         result_functions = []
@@ -183,4 +190,16 @@ def resolve_storyboard(storyboard):
 
         object["functions"] = result_functions
 
-    return storyboard
+    return objects
+
+
+def resolve_storyboard(storyboard: dict):
+    """Does the magic"""
+
+    camera = storyboard["camera"]
+    objects = storyboard["objects"]
+    sprites = storyboard["sprites"]
+
+    return {"camera": resolve_objects([camera])[0],
+            "objects": resolve_objects(objects),
+            "sprites": resolve_objects(sprites)}

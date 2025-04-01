@@ -1,6 +1,8 @@
 import random
 import src.common.easings as easings
 
+
+# TODO Rewrite these functions to accept restriction args
 def apply_function(objects, function):
     for object in objects:
         object["functions"].append(function.copy())
@@ -27,7 +29,7 @@ def apply_function_with_restriction(objects, function, restriction, easing):
     """Applies the function based on the restriction function
 
     :param objects: objects to apply the function to
-    :param function: the function we're applying
+    :param function: the function we're applreying
     :param restriction: the restriction we're using to decipher the effect per object. Takes only 1 argument, object.
     :return: objects with the new function applied
     """
@@ -63,4 +65,5 @@ def apply_function_with_index_times(objects, function, index_times):
     return objects
 
 
-def apply_function_v2(objects, function, restriction=None, restriction_easing=None,)
+def apply_function_v2(objects, function, restriction=None, restriction_easing=None,):
+    return

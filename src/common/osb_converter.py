@@ -59,8 +59,8 @@ def convert_osb_element_to_object(element):
     element = element.split("\n")
     element = [[y.strip() for y in x.split(",")] for x in element]
 
-# Sprite,Foreground,Centre,"sb\font\8.png",268.25,420.0
-# S,0,10000,30000,0.15,0.15
+    # Sprite,Foreground,Centre,"sb\font\8.png",268.25,420.0
+    # S,0,10000,30000,0.15,0.15
 
     object = {"type": element[0][0],
               "layer": element[0][1],
