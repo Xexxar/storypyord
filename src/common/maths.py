@@ -17,3 +17,25 @@ def calc_objects_center(objects):
             max_min_box["minY"] = y
 
     return [(max_min_box["maxX"] + max_min_box["minX"]) / 2, (max_min_box["maxY"] + max_min_box["minY"]) / 2]
+
+def determine_time_windows(functions):
+    if not functions:
+        return []
+
+    windows = set({})
+
+    for function in functions:
+        if function.get("start") not in windows:
+            windows.add(function.get("start"))
+        if function.get("end") not in windows:
+            windows.add(function.get("end"))
+
+    windows = list(windows)
+    windows.sort()
+
+    out = []
+
+    for x in range(len(windows) - 1):
+        out.append([windows[x], windows[x + 1]])
+
+    return out

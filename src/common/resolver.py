@@ -1,34 +1,11 @@
 """Hell. The worst algorithm in existance."""
 import src.common.easings as easings
-
+import src.common.maths as maths
 
 def int_time_to_time(object_time, int_time):
     duration = object_time["end"] - object_time["start"]
 
     return int(object_time["start"] + duration * int_time)
-
-
-def determine_time_windows(functions):
-    if not functions:
-        return []
-
-    windows = set({})
-
-    for function in functions:
-        if function.get("start") not in windows:
-            windows.add(function.get("start"))
-        if function.get("end") not in windows:
-            windows.add(function.get("end"))
-
-    windows = list(windows)
-    windows.sort()
-
-    out = []
-
-    for x in range(len(windows) - 1):
-        out.append([windows[x], windows[x + 1]])
-
-    return out
 
 
 def calculate_effective_percent(time_window, function):
@@ -47,7 +24,7 @@ def resolve_function_group(object, function_type, functions, default, merge_type
     if merge_type not in ["multiplication", "addition"]:
         raise Exception("Merge_type chosen not supported. We only support addition and multiplication here.")
 
-    time_windows = determine_time_windows(functions)
+    time_windows = maths.determine_time_windows(functions)
     arg_dimension = len(default)
 
     out_functions = []
@@ -168,7 +145,12 @@ def resolve_objects(objects):
 
         unique_functions = {function.get("function") for function in functions}
 
+        true_start = object.get("start")
+        true_end = object.get("end")
+
         for function_type in unique_functions:
+
+
             function_group = [function for function in functions if function.get("function") == function_type]
 
             if function_type in ["L", "P"]:
@@ -188,7 +170,15 @@ def resolve_objects(objects):
                                                         function_defaults[function_type],
                                                         function_merge_types[function_type])]
 
+        for f in result_functions:
+            if true_start < f["start"]:
+                true_start = f["start"]
+            if true_end < f["end"]:
+                true_end = f["end"]
+
         object["functions"] = result_functions
+        object["start"] = true_start
+        object["end"] = true_end
 
     return objects
 

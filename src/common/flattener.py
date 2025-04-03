@@ -8,9 +8,10 @@ import threading
 # SCALING THAT IS DYNAMIC IS VECTOR BASED
 
 
-def apply_perspective():
+def apply_perspective(active_functions, camera_pos, camera_scale, camera_z):
     if not active_functions:
-        {function: "S"}
+        # calculate the
+        {"function": "S"}
 
 
 def get_active_functions(functions, time_range):
@@ -61,7 +62,7 @@ def apply_stationary_camera_effect(sprite, camera, time_range):
         camera_z = camera_z[0].get("arguments")[0]
 
     # for the current functions, apply this perspective, then return, in moving case, make new functions here
-    return apply_perspective(active_functions, camera_pos, camera_scale, camera_z)
+    return apply_perspective(sprite, camera_pos, camera_scale, camera_z)
 
 
 def camera_active_check(c_active_functions):
@@ -70,6 +71,43 @@ def camera_active_check(c_active_functions):
     # TODO
     return 0
 
+
+def get_camera_metrics(camera):
+    functions = camera["functions"]
+    start = camera["start"],
+    end = camera["end"]
+
+    movements = [f for f in functions if f["function"] in {"M"}]
+
+    scales = [f for f in functions if f["function"] in {"S"}]
+
+    zeds = [f for f in functions if f["function"] in {"Z"}]
+
+    if not movements:
+        movements = [{"function": "F",
+                      "start": start,
+                      "end": end,
+                      "arguments": [*camera["position"], *camera["position"]]}]
+    if not movements:
+        scales = [{"function": "S",
+                      "start": start,
+                      "end": end,
+                      "arguments": [*camera["position"], *camera["position"]]}]
+
+    camera_times = maths.determine_time_windows(c_functions)
+
+
+
+
+def apply_camera(sprite, camera):
+    # grab the movement functions:
+
+    functions = [f for f in sprite["functions"] if f["function"] in {"M"}]
+
+    if not functions:
+
+
+        []
 
 def flatten_sprites(sprites, camera):
     """Keep depth data so we can use it to reorder after along with framerate"""
@@ -81,29 +119,57 @@ def flatten_sprites(sprites, camera):
     # TODO thread this
 
     for sprite in sprites:
-        functions = [f for f in sprite["functions"] if f["function"] in {"M"}]
+        # right now we have sprites that are of 3d [] M functions or have a pos arg and no additional effects.
 
-        if not camera_times:
-            camera_times = [[min([f["start"] for f in functions]), max([f["start"] for f in functions])]]
+        if [f for f in sprite["functions"] if f["function"] in {"S"}]:
+            raise Exception("Scaling variable used in 3D system.")
 
-        out_sprite = sprite.copy()
-
-        out_sprite["functions"] = [f for f in sprite["functions"] if f["function"] not in {"M"}]
-        sprite["functions"] = functions
-
-        for time_range in camera_times:
-            # determine if this time is moving, if it is, we're breaking everything into linear movements at the frame rate
-            c_active_functions = get_active_functions(c_functions, time_range)
-
-            if not camera_active_check(c_active_functions):
-                # Not moving! yay easy
-                out_sprite["functions"] = [*out_sprite["functions"],
-                                           *apply_stationary_camera_effect(sprite, camera, time_range)]
-            else:
-                out_sprite["functions"] = [*out_sprite["functions"],
-                                           *apply_moving_camera_effect(sprite, camera, time_range)]
+        if not functions:
+            # apply scaling and move on.
+            for
+        #
+        # if not camera_times:
+        #     camera_times = [[min([f["start"] for f in functions]), max([f["start"] for f in functions])]]
+        #
+        # out_sprite = sprite.copy()
+        #
+        # out_sprite["functions"] = [f for f in sprite["functions"] if f["function"] not in {"M"}]
+        # sprite["functions"] = functions
+        #
+        # for time_range in camera_times:
+        #     # determine if this time is moving, if it is, we're breaking everything into linear movements at the frame rate
+        #     c_active_functions = get_active_functions(c_functions, time_range)
+        #
+        #     if not camera_active_check(c_active_functions):
+        #         # Not moving! yay easy
+        #         out_sprite["functions"] = [*out_sprite["functions"],
+        #                                    *apply_stationary_camera_effect(sprite, camera, time_range)]
+        #     else:
+        #         out_sprite["functions"] = [*out_sprite["functions"],
+        #                                    *apply_moving_camera_effect(sprite, camera, time_range)]
 
         out.append(out_sprite)
+
+
+def prepare_camera(camera):
+    functions = camera["functions"]
+    start = camera["start"],
+    end = camera["end"]
+
+    maths.determine_time_windows()
+
+    movements = [f for f in functions if f["function"] in {"M"}]
+
+    scales = [f for f in functions if f["function"] in {"S"}]
+
+    zeds = [f for f in functions if f["function"] in {"Z"}]
+
+    if not scales:
+        scales = [{"function": "S",
+                   "start": start,
+                   "end": end,
+                   "easing": 0,
+                   "arguments": [*camera["position"], *camera["position"]]}]
 
 
 def flatten_storyboard(storyboard: dict) -> list:
